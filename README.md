@@ -1,3 +1,5 @@
+# Step by step description for Module 6 and Module 7
+
 # MODULE 6
 # MyToken Hardhat Project
 
