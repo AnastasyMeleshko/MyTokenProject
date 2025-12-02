@@ -1,3 +1,4 @@
+# MODULE 6
 # MyToken Hardhat Project
 
 This project demonstrates how to build, deploy, and test a custom ERC20 token using [Hardhat](https://hardhat.org/) and [OpenZeppelin Contracts](https://openzeppelin.com/contracts/).
@@ -112,5 +113,114 @@ MyTokenProject/
 
 - This project uses **Ethers v6**, so functions like `ethers.parseEther` and `contract.waitForDeployment()` are used instead of older v5 syntax.
 - Run all commands from the project root directory.
-```
 
+# Module 7 – Upgradable ERC20 Contract (Proxy Pattern)
+
+## Overview
+This assignment demonstrates how to make a smart contract upgradable using the **Proxy Pattern**.  
+We start from the ERC20 token created in Module 6, deploy it through a proxy, then upgrade the proxy to point to a new implementation (V2) while preserving state (balances).
+
+## Contracts
+- **MyTokenV1Upgradeable.sol**  
+  Initial ERC20 implementation with `initialize()` instead of constructor. Includes minting restricted to the owner.
+
+- **Proxy (Transparent Proxy via OpenZeppelin Upgrades)**  
+  Deployed automatically using Hardhat + OpenZeppelin upgrades plugin.
+
+- **MyTokenV2Upgradeable.sol**  
+  Extended version of V1 with an additional function:
+  ```solidity
+  function version() public pure returns (string memory) {
+      return "V2";
+  }
+
+#Project Setup
+Clone or open the project folder MyTokenProject.
+Install dependencies:
+npm install
+npm install --save-dev @openzeppelin/hardhat-upgrades
+npm install @openzeppelin/contracts-upgradeable
+
+
+Ensure hardhat.config.js includes:
+require("@nomicfoundation/hardhat-toolbox");
+require("@openzeppelin/hardhat-upgrades");
+
+
+#Deployment and Testing Steps
+1. Compile contracts
+   npx hardhat compile
+
+2. Start local Hardhat network
+   npx hardhat node
+
+3. Deploy Proxy with V1 implementation
+   npx hardhat run scripts/deployProxy.js --network localhost
+
+#Expected output:
+Deployer address
+Proxy address
+Initial balance of deployer
+
+4. Interact with V1 through Proxy
+Set proxy address in environment variable:
+
+Git Bash:
+export PROXY=0xYourProxyAddress
+
+PowerShell:
+$env:PROXY="0xYourProxyAddress"
+
+Run interaction script:
+npx hardhat run scripts/interactV1.js --network localhost
+
+Expected output:
+Initial balances
+Mint transaction hash
+Transfer transaction hash
+Updated balances
+
+5. Upgrade Proxy to V2
+npx hardhat run scripts/upgradeProxy.js --network localhost
+
+Expected output:
+Confirmation of upgrade
+version(): V2
+
+6. Validate after upgrade
+npx hardhat run scripts/validateAfterUpgrade.js --network localhost
+
+Expected output:
+version(): V2
+Balances unchanged from step 4
+
+7.Optional: Console checks
+npx hardhat console --network localhost
+
+Inside console:
+const MyTokenV2 = await ethers.getContractFactory("MyTokenV2Upgradeable");
+const token = MyTokenV2.attach(process.env.PROXY);
+(await token.name()).toString();   // "MyToken"
+(await token.symbol()).toString(); // "MTK"
+await token.version();             // "V2"
+
+Deliverables
+
+Contracts:
+contracts/MyTokenV1Upgradeable.sol
+contracts/MyTokenV2Upgradeable.sol
+
+Scripts:
+scripts/deployProxy.js
+scripts/interactV1.js
+scripts/upgradeProxy.js
+scripts/validateAfterUpgrade.js
+
+Evidence:
+Logs/screenshots of deployment, interaction, upgrade, and validation
+(Optional) Explorer links if deployed on Sepolia or another testnet
+Learning Outcomes
+Understand the Proxy Pattern for smart contract upgradeability
+Deploy and interact with contracts via proxy
+Perform upgrades without losing state
+Verify new functionality (version()) after upgrade
