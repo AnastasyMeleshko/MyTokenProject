@@ -1,0 +1,15 @@
+{
+  "name": "Student Visit Card #1",
+  "description": "Unique soulbound NFT representing the student's visit card",
+  "image": "https://gateway.pinata.cloud/ipfs/bafkreidahceo6hpyy756iqnm3zax6nlc7qsmrqsbrgk3wtfaq54nghuody",
+  "attributes": [
+    {
+      "trait_type": "studentName",
+      "value": "Alice"
+    },
+    {
+      "trait_type": "studentID",
+      "value": "S123456"
+    }
+  ]
+}

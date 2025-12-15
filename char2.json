@@ -1,0 +1,9 @@
+{
+  "name": "Game Character 2",
+  "description": "A cute kitty 2 for the game collection",
+  "image": "https://gateway.pinata.cloud/ipfs/bafkreifcvxvydzxr26fcoszbymdtynirftzruq6j4oog5d2h23dzublcqu",
+  "attributes": [
+    { "trait_type": "Color", "value": "Black" },
+    { "trait_type": "Speed", "value": 5 }
+  ]
+}
